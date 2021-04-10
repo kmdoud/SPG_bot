@@ -1,5 +1,5 @@
 require('dotenv').config();
-const tokenFile = require('./admin/token');
+const tokenFile = require('./token');
 const discord = require('discord.js');
 const client = new discord.Client();
 const fs = require('fs').promises;
