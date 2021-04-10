@@ -1,10 +1,11 @@
 require('dotenv').config();
+const tokenFile = require('./admin/token');
 const discord = require('discord.js');
 const client = new discord.Client();
 const fs = require('fs').promises;
 const path = require('path');
 const prefix = process.env.prefix;
-client.login(process.env.token);
+client.login(tokenFile.token);
 client.commands = new Map();
 console.log(`SPG_bot online!`);
 
