@@ -14,48 +14,14 @@ client.on('ready', () =>
     console.log(`${client.user.tag} online`);
 })
 
-client.on('message', (message) =>
+client.on('message', async function(message)
 {
     if(message.author.bot) return;
-    let cmdName = message.content.split(" ").shift();
-    console.log(cmdName);
-    // if(isValidCommand(message, `hello`))
-    // {
-    //     message.reply(`how may i assist you?`)
-    //     .catch(err => console.log(err));
-    // }
-    // if(isValidCommand(message, `dice`))
-    // {
-    //     message.reply(`${message.author.username} rolled a ${rollDice}`);
-    // }
-    // if(isValidCommand(message, `addrole`))
-    // {
-    //     let args = message.content.toLowerCase().split(` `);
-    //     console.log('args:', args)
-    //     args.shift();
-    //     console.log(`shifted args:`, args)
-    //     const targetUserId = args[0].substr(3,18)
-    //     const {guild} = message
-    //     const member = guild.members.cache.get(targetUserId)
-    //     if(!targetUserId)
-    //     {
-    //         message.reply(`Please specify someone to grant a role.`)
-    //         return
-    //     }
-    //     const roleName = args[1]
-    //     const role = guild.roles.cache.find((role) =>
-    //     {
-    //         return role.name.toLowerCase() === roleName.toLowerCase()
-    //     })
-    //     if(!role)
-    //     {
-    //         message.reply(`Please specify a verified role to grant.`)
-    //         return
-    //     }
-    //     //const member = guild.members.cache.get(targetUser.id)
-    //     member.roles.add(role)
-    //     message.reply(`<@${member.id}> now has the ${role} role`)
-    // }
+    let cmdArgs = message.content.replace(`!`, ``).split(new RegExp(/\s+/));
+    console.log(`commandContent:`,cmdArgs);
+    let commandName = getCommandName(cmdArgs);
+    console.log('CommandName:',commandName);
+    console.log(`cmdArgs:`, cmdArgs);
 });
 
 (async function registerCommands(dir = 'cmds')
@@ -87,5 +53,8 @@ client.on('message', (message) =>
 
 const isValidCommand = (message, cmdName) => 
 message.content.toLowerCase().startsWith(prefix + cmdName);
+
+const getCommandName = (message) =>
+message.shift();
 
 const rollDice = () => Math.floor(Math.random() * 6) + 1;
