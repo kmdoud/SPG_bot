@@ -1,5 +1,5 @@
 {
-  "name": "SPG_bot",
+  "name": "spgbot",
   "version": "1.0.0",
   "description": "",
   "main": "bot.js",
@@ -19,6 +19,12 @@
   "homepage": "https://github.com/kmdoud/SPG_bot#readme",
   "dependencies": {
     "discord.js": "^12.5.3",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "module-alias": "^2.2.2"
+  },
+  "_moduleAliases": {
+    "@root": ".",
+    "@cmds": "./cmds",
+    "@utilities": "./util"
   }
 }

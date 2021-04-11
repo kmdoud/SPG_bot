@@ -1,5 +1,6 @@
 require('dotenv').config();
-const tokenFile = require('./token');
+require('module-alias/register');
+const tokenFile = require('@root/token');
 const discord = require('discord.js');
 const client = new discord.Client();
 const fs = require('fs').promises;
@@ -16,12 +17,26 @@ client.on('ready', () =>
 
 client.on('message', async function(message)
 {
+    //no command sent by a bot will be executed
     if(message.author.bot) return;
+    //ensure the prefix `!` is used
+    if(!message.content.startsWith(prefix)) return;
+    //create array of strings called cmdArgs
     let cmdArgs = message.content.replace(`!`, ``).split(new RegExp(/\s+/));
     console.log(`commandContent:`,cmdArgs);
+    //extract the name of the command from the array
     let commandName = getCommandName(cmdArgs);
     console.log('CommandName:',commandName);
     console.log(`cmdArgs:`, cmdArgs);
+    //search the map for the command name, if exist execute the run function
+    if(client.commands.get(commandName))
+    {
+        client.commands.get(commandName).run(client, message, cmdArgs);
+    }
+    else
+    {
+        console.log(`${commandName}: Unknown command, please type !help for the command list`);
+    }
 });
 
 (async function registerCommands(dir = 'cmds')
@@ -47,7 +62,7 @@ client.on('message', async function(message)
                 client.commands.set(cmdName, cmdModule);
                 console.log(`Command Map:`, client.commands);
             }
-        }
+        } 
     }
 })()
 
@@ -56,5 +71,3 @@ message.content.toLowerCase().startsWith(prefix + cmdName);
 
 const getCommandName = (message) =>
 message.shift();
-
-const rollDice = () => Math.floor(Math.random() * 6) + 1;
